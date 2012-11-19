@@ -1,0 +1,49 @@
+{
+  "manifest_version": 2,
+  "name": "Printable",
+  "version": "0.8.1",
+  "description": "Print Google spreadsheets on Post-It notes.",
+  "background": {
+  	"page": "background.html"
+  },
+  "options_page": "options.html",
+  "icons": { 
+  	"16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png" 
+  },
+  "app": {
+    "launch": {
+      "local_path": "view.html"
+    }
+  }, 
+  "content_scripts": [
+    {
+      "matches": ["*://docs.google.com/spreadsheet/*"],
+      "css": ["css/spreadsheet.css"],
+      "js": ["js/jquery-1.7.2.min.js","js/spreadsheet.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "tabs", 
+    "http://*/*", 
+    "https://*/*",
+    "https://docs.google.com/feeds/*",
+    "https://spreadsheets.google.com/feeds/lists/*",
+    "https://www.google.com/accounts/OAuthGetRequestToken",
+    "https://www.google.com/accounts/OAuthAuthorizeToken",
+    "https://www.google.com/accounts/OAuthGetAccessToken",
+    "cookies"
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "web_accessible_resources": [
+    "css/img/icon16.png",
+    "css/spreadsheet.css",
+    "js/jquery-1.7.2.min.js",
+    "js/spreadsheet.js",
+    "chrome_ex_oauth.html",
+    "chrome_ex_oauth_init.js"
+  ]
+
+}
