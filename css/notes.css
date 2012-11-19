@@ -1,0 +1,81 @@
+@font-face {
+	font-family: 'hand-font';
+	src: url('../fonts/ComicSansMS.ttf') format('truetype');
+}
+.summary, #summary{
+  font-size: 17px;
+  height: 211px;
+  margin-bottom:4px;
+  resize: none;
+  line-height: 19px;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+.title, #title{
+  font-size: 14px;
+  height: 17px;
+  line-height: 17px;
+  font-weight: bold;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.url, #url, .author, #author{
+  font-size: 9px;
+  font-style: italic;
+  height: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 50%;
+  /*display: inline-block;*/
+  clear: none;
+  float: left;
+}
+.fullWidth {
+  width: 100%;
+}
+.tags, #tags{
+  font-size: 12px;
+  font-weight: bold;
+  margin-top:1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  clear: both;
+  height: 16px;
+  line-height: 16px;
+}
+.handwritten {
+	font-family: 'hand-font', Sans-Serif;
+	line-height: normal;
+}
+.summary.handwritten {
+	font-size:12px;
+	text-transform:uppercase;
+	line-height: 19px;
+}
+.title.handwritten {
+	font-size:12px;
+	text-transform:uppercase;
+}
+.url.handwritten {
+	font-size:8px;
+}
+.tags.handwritten {
+	font-size:10px;
+}
+.Droid {
+	font-family: 'Droid Sans', Sans-Serif;
+}
+.bold{
+	font-weight:bold;
+}
+.italic{
+	font-style:italic;
+}
+#clear, .clear {
+	clear: both;
+}
+#content{
+	margin: 0px;
+	padding: 0px;
+}
