@@ -118,14 +118,19 @@ console.log('gdocs.renderDocSelect');
 		for (var i = 0, doc; doc = bgPage.docs[i]; ++i) {
 			docKey = doc.resourceId.slice(12);
 			//selected = i==0?'selected':'';
+			//Scans the doclist for a document key that matches the default doc.
 			selected = docKey==localStorage['defaultDoc']?'selected':'';
+			//If it is found, then 'found' is updated to true.
 			found = selected=='selected'?true:found;
 			html.push('<option ',selected,' value="',doc.resourceId,'">',doc.title.truncate(),'</option>');
 		}
 		console.log('found ',found);
-		if(found == false){
+		//Adds the non-Citable spreadsheet to the top of the list.
+		if(found == false && localStorage['defaultDoc'] != undefined && localStorage['defaultDocName'] != undefined){
+			//Adds the default doc to front of the array 'html' and makes it selected.
 			html.unshift('<option selected value="spreadsheet:',localStorage['defaultDoc'],'">'+localStorage['defaultDocName'].truncate(),'</option>');
 		}
+		
 		//On the first run after update, update all documents in the background.
 		//Conditional on bgPage.docs.length to fire only after successfully retrieving doc list.
 		if(bgPage.firstRun == true){ //Check for flag.
@@ -135,6 +140,7 @@ console.log('gdocs.renderDocSelect');
 		}
 		
 	}
+	console.log('Render selection', html);
 	$('#selection').html('<select id="destination" class="Droid" name="destination">' + html.join('') + '</select>'); //<option value="new">Create New Document</option> //!!!This is the one major change from citable/popup.js gdocs.renderDocSelect must remain split.
 	//gdocs.changeAction(this.form, null); //!!!
 	//setTabOrder(order); //Resets the tab order to include this selection menu and the addNote button. //!!!
@@ -192,11 +198,17 @@ gdocs.getDocumentList = function(opt_url, callback) {
 			}
 		} else {
 			console.log("create new document");
-			util.displayMsg('No documents found.');
-			util.hideMsg();
-			gdocs.renderDocSelect(function() {
+			//Display the document name if there was a default document.
+			if(localStorage['defaultDocName']!=undefined){
+				$('#selection').text(localStorage['defaultDocName']);
+			} else {
+				//Show this error if there is no default and no docs in the folder. 
+				util.displayMsg('No Citable Documents');
+			}
+			//util.hideMsg();
+			/*gdocs.renderDocSelect(function() {
 				gdocs.changeAction(this.form,'new');
-			}); //Open the field to create a new doc after creating the new folder.
+			});*/ //Open the field to create a new doc after creating the new folder.
 		}
 		
 		if(callback){ callback() }; //Callback with null.

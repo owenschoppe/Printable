@@ -442,9 +442,18 @@ var startup = function(){
 //Callback after creating the document menu.
 var getDocId = function(){
 	console.log('getDocId()');
-	docKey = $('#destination').val().split(':')[1];
-	console.log('docKey: ',docKey);
-	gdocs.printDocument(null, processRowsCallback); //In printexport.js
+	if($('#destination').length){
+		//Menu exists-> load document.
+		console.log('Document menu exists');
+		docKey = $('#destination').val().split(':')[1];
+		console.log('docKey: ',docKey);
+		gdocs.printDocument(null, processRowsCallback); //In printexport.js
+	} else {
+		//Menu does not exist-> redirect to Drive.
+		console.log('No document menu.');
+		//$('#loading').addClass('hidden'); //Hide the loading gif.
+		$('#loading').html('Try printing directly from a spreadsheet in <a href="https://drive.google.com">Google Drive</a>.');
+	}
 }
 
 //TODO: Can we remove the redundant variable 'row' and improve efficiency with explicit passing?

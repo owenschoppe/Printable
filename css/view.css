@@ -16,6 +16,22 @@ body {
 	float:left;
 	clear:none;
 }
+#butter {
+  color: #fff;
+  background-color: #333333;
+  padding: 5px 15px;
+  border-radius: 15px;
+  width: 258px;
+  text-align: center;
+  /*float: right;*/
+  margin:auto;
+  margin-top: 0px;
+  margin-bottom: 15px;
+  display: none;
+}
+#butter.error {
+  background-color: red;
+}
 a {
 	color: #4E7DC2;
 	text-decoration: none;

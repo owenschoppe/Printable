@@ -2,6 +2,14 @@
 	font-family: 'hand-font';
 	src: url('../fonts/ComicSansMS.ttf') format('truetype');
 }
+/*@font-face {
+	font-family: 'droid-sans';
+	src: url('../fonts/DroidSans.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'droid-sans-bold';
+	src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
+}*/
 .summary, #summary{
   font-size: 17px;
   height: 211px;
