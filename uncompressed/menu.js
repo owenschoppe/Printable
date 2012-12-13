@@ -7,12 +7,13 @@ var requestFailureCount = 0;  // used for exponential backoff
 var requestTimeout = 1000 * 2;  // 5 seconds
 
 String.prototype.truncate = function(){
-    var re = this.match(/^.{0,22}[\S]*/);
+    var strlength = 33;
+    var re = this.match(/^.{0,33}[\S]*/); //Update this value to reflect strlength.
     var l = re[0].length;
     re = re[0].replace(/\s$/,'');
     if(l < this.length)
         re = re + "&hellip;";
-	else re = this.substr(0,22)+(this.length>23?"&hellip;":'');
+	else re = this.substr(0,strlength)+(this.length>strlength+1?"&hellip;":'');
     return re;
 };
 

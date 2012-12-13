@@ -4,7 +4,7 @@ html {
 }
 body {
 	font-size: 12px;
-	font-family:'Droid Sans', Arial, Verdana, Sans-Serif;
+	font-family:'droid-sans', Arial, Verdana, Sans-Serif;
 	color: #666666;
 	min-width: 300px;
 	overflow-x:hidden;

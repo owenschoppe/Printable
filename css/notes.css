@@ -2,14 +2,15 @@
 	font-family: 'hand-font';
 	src: url('../fonts/ComicSansMS.ttf') format('truetype');
 }
-/*@font-face {
+@font-face {
 	font-family: 'droid-sans';
 	src: url('../fonts/DroidSans.ttf') format('truetype');
 }
 @font-face {
-	font-family: 'droid-sans-bold';
+	font-family: 'droid-sans';
+	font-weight: bold;
 	src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
-}*/
+}
 .summary, #summary{
   font-size: 17px;
   height: 211px;
@@ -72,7 +73,7 @@
 	font-size:10px;
 }
 .Droid {
-	font-family: 'Droid Sans', Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 }
 .bold{
 	font-weight:bold;

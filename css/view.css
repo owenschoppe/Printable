@@ -1,6 +1,6 @@
 body {
 	font-size: 14px;
-	font-family:'Droid Sans', Arial, Verdana, Sans-Serif;
+	font-family:'droid-sans', Arial, Verdana, Sans-Serif;
 	background-color: #ccc;
 	margin:0px;
 	color: #444;
@@ -149,17 +149,17 @@ div.checkbox {
 	clear: none;
 }
 #print-button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-weight: bold;
 	float: right;
 }
 #cancel-button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-weight: 400;
 	float: right;
 }
 #template-button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-weight: 400;
 	float: left;
 	margin-left: 0px;
@@ -236,7 +236,7 @@ select:ACTIVE{
 	display:none;
 }
 .button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-size: 12px;
 	color:#444444;
 	/*width: 58px;

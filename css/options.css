@@ -1,5 +1,14 @@
+@font-face {
+	font-family: 'droid-sans';
+	src: url('../fonts/DroidSans.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'droid-sans';
+	font-weight: bold;
+	src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
+}
 body {
-	font-family: 'Droid Sans', Arial, Verdana, Sans-Serif;
+	font-family: 'droid-sans', Arial, Verdana, Sans-Serif;
 	font-size: 12px;
 	background-color: #ccc;
 	margin:0px;
@@ -14,7 +23,7 @@ a:hover {
 	text-decoration: underline;
 }
 .button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-size: 12px;
 	color:#444444;
 	/*width: 58px;
@@ -145,17 +154,17 @@ div.checkbox {
 	clear: none;
 }
 #print-button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-weight: bold;
 	float: right;
 }
 #cancel-button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-weight: thin;
 	float: right;
 }
 #template-button{
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 	font-weight: thin;
 	float: left;
 	margin-left: 35px;
@@ -274,7 +283,7 @@ div.checkbox {
 	font-size:10px;
 }
 .Myriad {
-	font-family: 'Droid Sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 }
 .bold{
 	font-weight:bold;
