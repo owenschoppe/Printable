@@ -1,19 +1,24 @@
+/*For template*/
 body {
-  font: 14px 'droid-sans', Arial, Verdana, Sans-Serif;
+  font-size: 14px;
+  font-family:'droid-sans', Arial, Verdana, Sans-Serif;
   background-color: #ccc;
   margin:0px;
+  color: #444;
+  position: absolute;
 }
+/*End*/
 #controls, #shadow, #indicator {
 	display: none !important;
 	width: 0px;
 	
 }
-#print {
+/*#print {
 	background: url(img/sprite_black2.png) no-repeat -84px -63px;
 	height: 21px;
 	opacity: .55;
 	width: 21px;
-}
+}*/
 
 #print_instructions {
 	margin: 40px;
@@ -83,7 +88,8 @@ body {
 .portrait #content{
 	padding: 0 16px 0 15px;
 }
-.m.landscape #content{
+/*.m = 3m template*/
+.m.landscape #content{ 
 	padding: 16px 72px 16px 72px;
 }
 .m.portrait #content{
@@ -98,6 +104,7 @@ body {
 	margin: 24px 40px 4px 40px; /* bottom margin(24px) = padding bottom(20px) + 4px */
 	padding: 0 0 20px 0;
 }
+/*.m = 3m template*/
 .m.landscape .note_wrapper{
 	margin: 40px 0px 20px 0px; /* bottom margin(40px) = padding bottom(20px) + 20px */
 	padding: 0 0 20px 0;
@@ -128,11 +135,11 @@ body {
 #form{
 	margin:20px;
 }
-textarea,input{
+/*textarea,input{
 	width: 100%;
 	background-color: transparent !important;
 	border: none;
-}
+}*/
 .divider {
 	margin:40px 0 20px 0;
 	border-top:1px #000 solid;

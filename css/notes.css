@@ -2,7 +2,7 @@
 	font-family: 'hand-font';
 	src: url('../fonts/ComicSansMS.ttf') format('truetype');
 }
-@font-face {
+/*@font-face {
 	font-family: 'droid-sans';
 	src: url('../fonts/DroidSans.ttf') format('truetype');
 }
@@ -10,7 +10,30 @@
 	font-family: 'droid-sans';
 	font-weight: bold;
 	src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
+}*/
+
+@font-face {
+    font-family: 'droid-sans';
+    src: url('../fonts/DroidSans-webfont.eot');
+    src: url('../fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/DroidSans-webfont.woff') format('woff'),
+         url('../fonts/DroidSans-webfont.ttf') format('truetype'),
+         url('../fonts/DroidSans-webfont.svg#DroidSansRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'droid-sans';
+    src: url('../fonts/DroidSans-Bold-webfont.eot');
+    src: url('../fonts/DroidSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/DroidSans-Bold-webfont.woff') format('woff'),
+         url('../fonts/DroidSans-Bold-webfont.ttf') format('truetype'),
+         url('../fonts/DroidSans-Bold-webfont.svg#DroidSansBold') format('svg');
+    font-weight: bold;
+    font-style: bold;
+}
+
 .summary, #summary{
   font-size: 17px;
   height: 211px;
