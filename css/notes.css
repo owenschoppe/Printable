@@ -11,32 +11,33 @@
 	font-weight: bold;
 	src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
 }*/
-
+/*SVG doesn't display italic- include italic forms*/
+/*
 @font-face {
     font-family: 'droid-sans';
-    src: url('../fonts/DroidSans-webfont.eot');
-    src: url('../fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/DroidSans-webfont.woff') format('woff'),
-         url('../fonts/DroidSans-webfont.ttf') format('truetype'),
-         url('../fonts/DroidSans-webfont.svg#DroidSansRegular') format('svg');
+    src: url('../fonts/droidsans-webfont.eot');
+    src: url('../fonts/droidsans-webfont?#iefix') format('embedded-opentype'),
+         url('../fonts/droidsans-webfont.woff') format('woff'),
+         url('../fonts/droidsans-webfont.ttf') format('truetype'),
+         url('../fonts/droidsans-webfont.svg#DroidSansRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'droid-sans';
-    src: url('../fonts/DroidSans-Bold-webfont.eot');
-    src: url('../fonts/DroidSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/DroidSans-Bold-webfont.woff') format('woff'),
-         url('../fonts/DroidSans-Bold-webfont.ttf') format('truetype'),
-         url('../fonts/DroidSans-Bold-webfont.svg#DroidSansBold') format('svg');
+    src: url('../fonts/droidsans-bold-webfont.eot');
+    src: url('../fonts/droidsans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/droidsans-bold-webfont.woff') format('woff'),
+         url('../fonts/droidsans-bold-webfont.ttf') format('truetype'),
+         url('../fonts/droidsans-bold-webfont.svg#DroidSansBold') format('svg');
     font-weight: bold;
     font-style: bold;
 }
-
+*/
 .summary, #summary{
   font-size: 17px;
-  height: 211px;
+  height: 209px;
   margin-bottom:4px;
   resize: none;
   line-height: 19px;
@@ -56,6 +57,7 @@
   font-size: 9px;
   font-style: italic;
   height: 11px;
+  line-height: 11px; /*fixes font overflow pixels*/
   overflow: hidden;
   text-overflow: ellipsis;
   width: 50%;
@@ -96,7 +98,7 @@
 	font-size:10px;
 }
 .Droid {
-	font-family: 'droid-sans', Sans-Serif;
+	font-family: 'droid-sans', Arial, Sans-Serif;
 }
 .bold{
 	font-weight:bold;

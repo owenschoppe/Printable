@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
 	font-family: 'droid-sans';
 	src: url('../fonts/DroidSans.ttf') format('truetype');
 }
@@ -6,9 +6,31 @@
 	font-family: 'droid-sans';
 	font-weight: bold;
 	src: url('../fonts/DroidSans-Bold.ttf') format('truetype');
+}*/
+/*SVG doesn't display italic- include italic forms*/
+/*@font-face {
+    font-family: 'droid-sans';
+    src: url('../fonts/DroidSans-webfont.eot');
+    src: url('../fonts/DroidSans-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/DroidSans-webfont.woff') format('woff'),
+         url('../fonts/DroidSans-webfont.ttf') format('truetype'),
+         url('../fonts/DroidSans-webfont.svg#DroidSansRegular') format('svg'); 
+    font-weight: normal;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'droid-sans';
+    src: url('../fonts/DroidSans-Bold-webfont.eot');
+    src: url('../fonts/DroidSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/DroidSans-Bold-webfont.woff') format('woff'),
+         url('../fonts/DroidSans-Bold-webfont.ttf') format('truetype'),
+         url('../fonts/DroidSans-Bold-webfont.svg#DroidSansBold') format('svg');
+    font-weight: bold;
+    font-style: bold;
+}*/
 body {
-	font-family: 'droid-sans', Arial, Verdana, Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 	font-size: 12px;
 	background-color: #ccc;
 	margin:0px;
@@ -23,7 +45,7 @@ a:hover {
 	text-decoration: underline;
 }
 .button{
-	font-family: 'droid-sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 	font-size: 12px;
 	color:#444444;
 	/*width: 58px;
@@ -154,17 +176,17 @@ div.checkbox {
 	clear: none;
 }
 #print-button{
-	font-family: 'droid-sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 	font-weight: bold;
 	float: right;
 }
 #cancel-button{
-	font-family: 'droid-sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 	font-weight: thin;
 	float: right;
 }
 #template-button{
-	font-family: 'droid-sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 	font-weight: thin;
 	float: left;
 	margin-left: 35px;
@@ -264,7 +286,7 @@ div.checkbox {
   text-overflow: ellipsis;
 }
 .handwritten {
-	font-family: 'hand-font', Arial, Sans-Serif;
+	font-family: 'hand-font', Sans-Serif;
 	line-height: normal;
 }
 .summary.handwritten {
@@ -283,7 +305,7 @@ div.checkbox {
 	font-size:10px;
 }
 .Myriad {
-	font-family: 'droid-sans', Arial, Sans-Serif;
+	font-family: 'droid-sans', Sans-Serif;
 }
 .bold{
 	font-weight:bold;

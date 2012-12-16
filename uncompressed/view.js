@@ -17,6 +17,8 @@ function printHandler(e) {
 }
 
 function cancelHandler(e) {
+    console.log('close window');
+	window.open('', '_self', ''); //bug fix. This is a hack and may not be future proof. Works by crashing window.open?
 	window.close();
 	return false;
 }
