@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Printable",
-  "version": "0.8.4",
-  "description": "Print Google spreadsheets on Post-It notes.",
+  "version": "0.8.5",
+  "description": "Print Google spreadsheets on sticky notes.",
   "background": {
   	"page": "background.html"
   },
