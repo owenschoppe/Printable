@@ -18,14 +18,17 @@ console.log('gdocs accessToken',gDocsUtil.accessToken, chrome.identity);
 }*/
 }
 
-
-chrome.app.runtime.onLaunched.addListener(function() {
-		chrome.app.window.create('view.html', {
+launchPrintable = function(){
+	chrome.app.window.create('view.html', {
 		    'bounds': {
 		      'width': 1200,
 		      'height': 900
 		    }
 	  	});
+}
+
+chrome.app.runtime.onLaunched.addListener(function() {
+		launchPrintable();
 });
 
 //Listener for communication from Citable.
@@ -40,6 +43,7 @@ chrome.runtime.onMessageExternal.addListener(
 		//localStorage.defaultDocName = request.name;
 		////gdocs.printDocument();
 		//gdocs.printDocumentPage();
+		launchPrintable();
 		sendResponse({success: true});
 	} else if (request.exportDoc) {
 		docKey = request.key;
