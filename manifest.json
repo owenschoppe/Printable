@@ -1,32 +1,31 @@
 {
   "manifest_version": 2,
   "name": "Printable",
-  "version": "0.8.5",
+  "version": "0.9",
+  "minimum_chrome_version": "29",
+  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdz6yw7GgzmoEr7UzXVozEOXs5RC2rQs90LtXeo/0vOOYUMhqNAWwGUel8kRgpZPu9sMuaZV7NVEiPR9MZuEUoTgwZ8NNZ/JiLxjzb9tyB3++PaOjBuIdOL3TlF2Ut9BQsRcQTh35oOvvv/WIypxe68dIRICTykKP9XBg0UwKPnQIDAQAB",
   "description": "Print Google spreadsheets on sticky notes.",
-  "background": {
-  	"page": "background.html"
+  "oauth2": {
+    "client_id": "541444188803-cgjdo5m8u1992dmgs809rqra6mao1dp5.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive"
+    ]
   },
-  "options_page": "options.html",
   "icons": { 
   	"16": "icon16.png",
-    "48": "icon48.png",
+    "19": "icon19.png",
+    "38": "icon76.png",
     "128": "icon128.png" 
   },
   "app": {
-    "launch": {
-      "local_path": "view.html"
+    "background": {
+      "page": "background.html",
+      "script": "background.js"
     }
-  }, 
-  "content_scripts": [
-    {
-      "matches": ["*://docs.google.com/spreadsheet/*"],
-      "css": ["css/spreadsheet.css"],
-      "js": ["js/jquery-1.7.2.min.js","js/spreadsheet.js"],
-      "run_at": "document_end"
-    }
-  ],
+  },
   "permissions": [
-    "tabs", 
+    "storage",
+    "identity",
     "http://*/*", 
     "https://*/*",
     "https://docs.google.com/feeds/*",
@@ -34,16 +33,9 @@
     "https://www.google.com/accounts/OAuthGetRequestToken",
     "https://www.google.com/accounts/OAuthAuthorizeToken",
     "https://www.google.com/accounts/OAuthGetAccessToken",
-    "cookies"
-  ],
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
-  "web_accessible_resources": [
-    "css/img/icon16.png",
-    "css/spreadsheet.css",
-    "js/jquery-1.7.2.min.js",
-    "js/spreadsheet.js",
-    "chrome_ex_oauth.html",
-    "chrome_ex_oauth_init.js"
-  ]
 
+    "https://ssl.gstatic.com/",
+    "https://www.googleapis.com/",
+    "https://accounts.google.com/"
+  ]
 }

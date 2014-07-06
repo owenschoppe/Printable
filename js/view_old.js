@@ -381,9 +381,17 @@ function parseURLParams(url) {
   return params;
 }
 
+//Run toggleAuth when the constructor is called to kick everything off.
+//stored in backgroundpage for persistance and universal access within the app.
+bgPage.toggleAuth(true,function(){
+	//Inital function fired on page load.
+	window.onload = function(){
+		startup();
+	}
+});
 
 
-if (bgPage.oauth.hasToken()) {	
+/*if (bgPage.oauth.hasToken()) {	
 	//Inital function fired on page load.
 	window.onload = function(){
 		startup();
@@ -399,7 +407,7 @@ if (bgPage.oauth.hasToken()) {
 	   startup(); //Try restarting the page.
 	   //util.scheduleRequest();
 	});
-}
+}*/
 
 var startup = function(){
 	console.log('window.url ', document.URL);

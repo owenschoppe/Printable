@@ -20,7 +20,25 @@ var callbacks = [];
 //Variable that is only true in the first start after an update. //Set to false if there is no need to update the headers.
 //var firstRun = true; 
 
-var oauth = ChromeExOAuth.initBackgroundPage({
+//defines a common and persistant object for handling the accessToken and other functions. avoids having to invoke angular in the background.
+var gDocsUtil = new GDocs();
+
+toggleAuth = function(interactive, callback) {
+console.log('gdocs accessToken',gDocsUtil.accessToken);
+//if (!gdocs.accessToken) {
+  gDocsUtil.auth(interactive, function() { //was failing to get the refreshed accessToken. Now we just call chrome.auth every time.
+    //$scope.fetchFolder(false);
+    //$scope.fetchDocs(false);
+    callback();
+  });
+/*} else {
+  //gdocs.revokeAuthToken(function() {});
+  //this.clearDocs();
+  callback();
+}*/
+}
+
+/*var oauth = ChromeExOAuth.initBackgroundPage({
 'request_url': 'https://www.google.com/accounts/OAuthGetRequestToken',
 'authorize_url': 'https://www.google.com/accounts/OAuthAuthorizeToken',
 'access_url': 'https://www.google.com/accounts/OAuthGetAccessToken',
@@ -28,7 +46,7 @@ var oauth = ChromeExOAuth.initBackgroundPage({
 'consumer_secret': 'ZYDYGWh1g71m2-w1iA0-VxSC',
 'scope': FULL_SCOPE,
 'app_name': 'Citable'
-});
+});*/
       
 //Get authorization on first load of bgPage. //Moved to view.js since we have a docList now.
 //oauth.authorize(function() {});
@@ -118,9 +136,10 @@ function clearPendingRequests() {
 	requests = [];
 };
 
-function logout() {
+/*function logout() {
 	docs = [];
 	setIcon({'text': ''});
 	oauth.clearTokens();
 	clearPendingRequests();
-};
+};*/
+
