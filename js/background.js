@@ -1,3 +1,5 @@
+var blacklistedExtension = null;
+
 //defines a common and persistant object for handling the accessToken and other functions. avoids having to invoke angular in the background.
 var gDocsUtil = new GDocs();
 
@@ -24,4 +26,28 @@ chrome.app.runtime.onLaunched.addListener(function() {
 		      'height': 900
 		    }
 	  	});
+});
+
+//Listener for communication from Citable.
+chrome.runtime.onMessageExternal.addListener(
+  function(request, sender, sendResponse) {
+	console.log('request: ',request,request.name);
+	if (sender.id == blacklistedExtension) {
+	  return;  // don't allow this extension access
+	} else if (request.printDoc) {
+		docKey = request.key;
+		//localStorage.defaultDoc = docKey;
+		//localStorage.defaultDocName = request.name;
+		////gdocs.printDocument();
+		//gdocs.printDocumentPage();
+		sendResponse({success: true});
+	} else if (request.exportDoc) {
+		docKey = request.key;
+		//localStorage.defaultDoc = docKey;
+		//localStorage.defaultDocName = request.name;
+		////gdocs.exportDocument();
+		//gdocs.exportDocumentPage();
+		sendResponse({success: true});
+	}
+	console.log('docKey ', docKey);
 });
