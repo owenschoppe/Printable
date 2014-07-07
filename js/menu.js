@@ -1,7 +1,20 @@
 var order = ['summary','title','author','url','tags','destination','doc_title','addNote']; //the tab order for select fields
-var folders = ['Citable_Documents','Citation_Tool_Documents'];
+//var folders = ['Citable_Documents','Citation_Tool_Documents'];
 
-var bgPage = chrome.extension.getBackgroundPage();
+var driveProperties = [{  
+    'key': 'Citable',
+    'value': 'true',
+    'visibility': 'PUBLIC'
+  }]; 
+
+//var bgPage = chrome.extension.getBackgroundPage();
+//In the app's launch page:
+var bgPage; 
+var gDocsUtil;
+chrome.runtime.getBackgroundPage(function(ref){
+	bgPage = ref;
+	gDocsUtil = bgPage.gDocsUtil;
+}); 
 var pollIntervalMax = 1000 * 60 * 60;  // 1 hour
 var requestFailureCount = 0;  // used for exponential backoff
 var requestTimeout = 1000 * 2;  // 5 seconds
@@ -86,7 +99,8 @@ gdocs.GoogleDoc = function(entry) {
 
 gdocs.Category = function(entry) {
   this.entry = entry;
-  this.resourceId = entry.gd$resourceId.$t;
+  this.resourceId = entry.id;
+  this.title = entry.title;
 };
 
 gdocs.changeAction = function(aForm, aValue, aLabel){
@@ -99,8 +113,8 @@ gdocs.changeAction = function(aForm, aValue, aLabel){
 	
 	docKey = $('#destination').val().split(':')[1];
 	console.log('docKey: ',docKey,aLabel);
-	localStorage['defaultDoc'] = docKey;
-	localStorage['defaultDocName'] = aLabel;
+	localStor.set({'defaultDoc' : docKey});
+	localStor.set({'defaultDocName': aLabel});
 	setTimeout(function(){gdocs.printDocument(null, processRowsCallback)},0); //In printexport.js
 	return;
 }
@@ -120,16 +134,16 @@ console.log('gdocs.renderDocSelect');
 			docKey = doc.resourceId.slice(12);
 			//selected = i==0?'selected':'';
 			//Scans the doclist for a document key that matches the default doc.
-			selected = docKey==localStorage['defaultDoc']?'selected':'';
+			selected = docKey==localStor.get('defaultDoc')?'selected':'';
 			//If it is found, then 'found' is updated to true.
 			found = selected=='selected'?true:found;
 			html.push('<option ',selected,' value="',doc.resourceId,'">',doc.title.truncate(),'</option>');
 		}
 		console.log('found ',found);
 		//Adds the non-Citable spreadsheet to the top of the list.
-		if(found == false && localStorage['defaultDoc'] != undefined && localStorage['defaultDocName'] != undefined){
+		if(found == false && localStor.get('defaultDoc') != undefined && localStor.get('defaultDocName') != undefined){
 			//Adds the default doc to front of the array 'html' and makes it selected.
-			html.unshift('<option selected value="spreadsheet:',localStorage['defaultDoc'],'">'+localStorage['defaultDocName'].truncate(),'</option>');
+			html.unshift('<option selected value="spreadsheet:',localStor.get('defaultDoc'),'">'+localStor.get('defaultDocName').truncate(),'</option>');
 		}
 		
 		//On the first run after update, update all documents in the background.
@@ -200,8 +214,8 @@ gdocs.getDocumentList = function(opt_url, callback) {
 		} else {
 			console.log("create new document");
 			//Display the document name if there was a default document.
-			if(localStorage['defaultDocName']!=undefined){
-				$('#selection').text(localStorage['defaultDocName']);
+			if(localStor.get('defaultDocName')!=undefined){
+				$('#selection').text(localStor.get('defaultDocName'));
 			} else {
 				//Show this error if there is no default and no docs in the folder. 
 				util.displayMsg('No Citable Documents');
@@ -391,8 +405,8 @@ console.log('gdocs.createFolder ', title);
 //Searches for the specific category passed in through title
 ////////////////////////////////////////////////////////////
 
-gdocs.getFolder = function(title, callback) {
-console.log('gdocs.getFolder');
+gdocs.getFolder = function(title, callback, opt_config) {
+console.log('gdocs.getFolder',gDocsUtil.accessToken);
 
   var params = {
     'headers': {
@@ -414,13 +428,13 @@ console.log('gdocs.getFolder');
 		
 		console.log(data);
 		
-		if(data.feed.entry) {
+		if(data.items) {
 			console.log('parse folders');
-			for (var i = 0, entry; entry = data.feed.entry[i]; ++i) {
+			for (var i = 0, entry; entry = data.items[i]; ++i) {
 				bgPage.cat.push(new gdocs.Category(entry));
 			}
 			console.log('folder Id: ', bgPage.cat[bgPage.cat.length-1].resourceId);
-			callback(bgPage.cat[bgPage.cat.length-1].resourceId);
+			callback && callback(bgPage.cat[bgPage.cat.length-1].resourceId);
   		} else {
   			callback(null);
   		}
@@ -428,16 +442,21 @@ console.log('gdocs.getFolder');
 	}
 
     //util.displayMsg('Fetching your docs');
-
-    url = bgPage.DOCLIST_FEED; //+ '?title=%22PR+Citation_Tool_Documents%22'; //retrieves the citations folder
-    params['parameters'] = {
-      'alt': 'json',
-      'title': folders[title],
-      'showfolders': 'true',
-      'title-exact': 'true'
-    };
     
-  bgPage.oauth.sendSignedRequest(url, handleSuccess, params);
+    if (gDocsUtil.accessToken) {
+		console.log('fetchFolder',gDocsUtil.accessToken, bgPage.firstRun);
+	    
+	    var config = opt_config ? opt_config : {
+			params: {'alt': 'json', 'q': "mimeType contains 'folder' and properties has { key='"+driveProperties[0].key+"' and value='"+driveProperties[0].value+"' and visibility='"+driveProperties[0].visibility+"' } and trashed!=true"},
+			headers: {
+			'Authorization': 'Bearer ' + gdocs.accessToken
+			}
+	    };
+
+	    url = gDocsUtil.DOCLIST_FEED+'?'+util.stringify(config.params); //+ '?title=%22PR+Citation_Tool_Documents%22'; //retrieves the citations folder
+
+	    gDocsUtil.makeRequest('GET', url, handleSuccess, null, config.headers);
+	}
 };
 
 /////////////////////////////////////////////////////////////

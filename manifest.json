@@ -33,7 +33,6 @@
     "https://www.google.com/accounts/OAuthGetRequestToken",
     "https://www.google.com/accounts/OAuthAuthorizeToken",
     "https://www.google.com/accounts/OAuthGetAccessToken",
-
     "https://ssl.gstatic.com/",
     "https://www.googleapis.com/",
     "https://accounts.google.com/"
