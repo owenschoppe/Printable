@@ -1,3 +1,7 @@
+html {
+	overflow: scroll;
+}
+
 body {
 	font-size: 14px;
 	font-family:'droid-sans', Arial, Sans-Serif;
@@ -405,10 +409,12 @@ ui-state-highlight {
 .landscape{
 	width: 10.5in; /* page width(11in) = 10.5in + page-margin(.25in*2) */
 	height: 8in; /* page width(8.5in) = 8in + page-margin(.25in*2) */
+	float:left;
 }
 .portrait{
 	width: 8in;
 	height: 10.5in;
+	float:left;
 }
 /*-----------------------*/
 #content {

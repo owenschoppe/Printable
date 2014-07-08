@@ -31,7 +31,12 @@ console.log('gdocs accessToken',gDocsUtil.accessToken, chrome.identity);
 }
 
 launchPrintable = function(){
-	chrome.app.window.create('view.html');
+	chrome.app.window.create('view.html', {
+	    'bounds': {
+	    	'width': 1200,
+	    	'height': 900
+	    }
+  	});
 }
 
 chrome.app.runtime.onLaunched.addListener(function() {
