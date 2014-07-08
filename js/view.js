@@ -62,7 +62,7 @@ var rows = []; //From printexport.js
 //console.log(rows);
 
 var renderCallback = function(container, pages, callback){
-    //console.log(container, pages, callback);
+    console.log('renderCallback',container, pages, callback);
 	//Loads the right number in to the controlbar.
 	setTotal(pages);
 	var output = document.getElementById('output');
@@ -124,20 +124,24 @@ setTotal = function(pages){
 	//Opens a new tab that prints a template.
 	function openTemplate()
 	{
-		if(localStor.get('orientation') == 'portrait') { 
-			console.log('Open portrait template, ', localStor.get('orientation'));
-			chrome.tabs.create({ 'url' : 'template-portrait.html'});
-		} else {
-			console.log('Open landscape template, ', localStor.get('orientation'));
-			chrome.tabs.create({ 'url' : 'template-landscape.html'});
+		var onStorage = function(items){
+			console.log('openTemplate.onStorage',items);
+			if(items.orientation == 'portrait') { 
+				console.log('Open portrait template, ', items.orientation);
+				chrome.tabs.create({ 'url' : 'template-portrait.html'});
+			} else {
+				console.log('Open landscape template, ', items.orientation);
+				chrome.tabs.create({ 'url' : 'template-landscape.html'});
+			}
 		}
+		chrome.storage.local.get('orientation',onStorage);
 	}
 	
 	//Changes which font is used.
 	changeFont = function(formName, elementName){
 		console.log('changeFont() ', elementName);
 		//Caches the font value;
-		localStor.set({'font' : elementName});
+		chrome.storage.local.set({'font' : elementName});
 		
 		if(elementName == 'Droid'){
 			console.log('toggle to Droid');
@@ -163,7 +167,7 @@ setTotal = function(pages){
 	changeOrient = function(aForm, aValue){
 		console.log('changeOrient() ',aValue);
 		//Saves the orientation setting in localStorage.
-		localStor.set({'orientation' : aValue});
+		chrome.storage.local.set({'orientation' : aValue});
 
 		if(aValue == 'portrait'){
 			console.log('toggle to portrait');
@@ -188,7 +192,7 @@ setTotal = function(pages){
 	//Changes the template.
 	changeTemplate = function(aForm, aValue){
 		console.log('changeTemplate() ',aValue);
-		localStor.set({'m' : aValue});
+		chrome.storage.local.set({'m' : aValue});
 
 		if(aValue == true){
 			$('.page').addClass('m');
@@ -246,7 +250,7 @@ setTotal = function(pages){
 		console.log('toggleCSS() ', dir);
 		switch(dir){
 			case 0: //landscape
-				localStor.set({'orientation':'landscape'});
+				chrome.storage.local.set({'orientation':'landscape'});
 				//Toggles which @Page css sheet is used.
 				document.styleSheets[0].disabled = false; //TODO: what is a faster way to handle this. Could save a couple seconds.
 				document.styleSheets[1].disabled = true;
@@ -255,7 +259,7 @@ setTotal = function(pages){
 				$('.portraitIcon').hide();
 				break;
 			case 1: //portrait
-				localStor.set({'orientation':'portrait'});
+				chrome.storage.local.set({'orientation':'portrait'});
 				//Toggles which @Page css sheet is used.
 				document.styleSheets[1].disabled = false;
 				document.styleSheets[0].disabled = true;
@@ -294,8 +298,11 @@ setTotal = function(pages){
 	
 	//Changes the font used in the helper icon in the control bar.
 	var setFontIcon = function(dir){
-		if(dir == 0){ localStor.set({'font':'Droid'}); } else { localStor.set({'font':'handwritten'}); }
-		$('.fontIcon').addClass(localStor.get('font'));
+		if(dir == 0){ chrome.stoage.local.set({'font':'Droid'}); } else { chrome.storage.local.set({'font':'handwritten'}); }
+		
+		chrome.storage.local.get('font',function(items){
+			$('.fontIcon').addClass(items.font);
+		});
 	};
 	
 	var setTemplate = function(dir){
@@ -343,30 +350,37 @@ setTotal = function(pages){
 	
 	changeAction = function(formName, formValue, rows){
 		console.time('loading timer');
-		$('#loading').removeClass('hidden');
-		console.log(formName, formValue);
-		var valuesArray = localStor.get(docKey).split(",");
-		var i = parseInt(formName.substr(5,1));
-		//if(isNumber(i)){
-			valuesArray[i] = formValue;
-			localStor.get(docKey) = valuesArray;
-			//rerenderNotes(formName);
-		//setTimeout(function(){rerenderNotes(i,valuesArray)},0);
-			setTimeout(function(){renderNotes(rows, timerEnd);},0);
-			//console.log(localStorage);
-		/*} else {
-			console.log('parse formName error');
-		}
-		
-		function isNumber (o) {
-		  return ! isNaN (o-0);
-		}*/
-		
-		var timerEnd = function(){
-			console.timeEnd('loading timer');
-		};
 
-	};	
+		var onStorage = function(items){
+			console.log('changeAction.onStorage',formName, formValue, rows, items);
+			$('#loading').removeClass('hidden');
+			var valuesArray = items[docKey];
+			var i = parseInt(formName.substr(5,1));
+			//if(isNumber(i)){
+				valuesArray[i] = formValue;
+				chrome.storage.local.set({docKey : valuesArray});
+				//rerenderNotes(formName);
+			//setTimeout(function(){rerenderNotes(i,valuesArray)},0);
+				setTimeout(function(){renderNotes(rows, timerEnd);},0);
+				//console.log(localStorage);
+			/*} else {
+				console.log('parse formName error');
+			}
+			
+			function isNumber (o) {
+			  return ! isNaN (o-0);
+			}*/
+			
+			var timerEnd = function(){
+				console.timeEnd('loading timer');
+			};
+		}	
+
+		chrome.storage.local.get(docKey,onStorage);
+
+	};
+
+
 function parseURLParams(url) {
   var queryStart = url.indexOf("?") + 1;
   var queryEnd   = url.indexOf("#") + 1 || url.length + 1;
@@ -395,7 +409,7 @@ var getDocId = function(){
 	if($('#destination').length){
 		//Menu exists-> load document.
 		console.log('Document menu exists');
-		docKey = $('#destination').val().split(':')[1];
+		docKey = $('#destination').val();
 		console.log('docKey: ',docKey);
 		gdocs.printDocument(null, processRowsCallback); //In printexport.js
 	} else {
@@ -430,19 +444,31 @@ var processRowsCallback = function(){
 	//Initialize the local cache for this document to be the default settings, will update on initSelect()
 	//localStorage[docKey] = defaultColumns; 
 	//console.log(localStorage[docKey]);
+
 	
+	var onSet = function(){
+	
+		//console.log(localStor.get(''));
+		//Init CSS
+		var onStorage = function(items){
+			console.log('processRowsCallback.onStorage',items);
+			toggleCSS((items.orientation=='portrait'? 1 : 0 )); //Important: No callback defined. 
+			//1 sec
+			console.time('renderNotes timer');
+			//renderNotes(makeSortable); //makeSortable >2sec
+			renderNotes(rows);
+			//renderNotes(makeDraggable);
+		}
+	
+		chrome.storage.local.get('orientation',onStorage);
+	}
+
 	for( var i=0; i<5; i++ ){
 		initSelect(i,cols,defaultFields);
 	}
-	
-	//console.log(localStor.get(''));
-	//Init CSS
-	toggleCSS((localStor.get('orientation')=='portrait'? 1 : 0 )); //Important: No callback defined. 
-	//1 sec
-	console.time('renderNotes timer');
-	//renderNotes(makeSortable); //makeSortable >2sec
-	renderNotes(rows);
-	//renderNotes(makeDraggable);
+	var obj = new Object;
+	obj[docKey] = cols;
+	chrome.storage.local.set(obj,onSet);
 }
 
 //Render select controls.
@@ -478,24 +504,41 @@ function onChangeHandler(e){
 //Initialize select controls.
 initSelect = function(i, cols, defaultFields) {
 	var defaultColumns = ['summary','title','author','url','tags'];
-	var formName = defaultFields[i];
-	console.log('initSelect', formName, i, localStor.get(docKey));
-	//var i = parseInt(formName.substr(5,1)); //Done. TODO: pass in i to boost speed.
-	if(!localStor.get(docKey)){localStor.set({docKey : ''});} //Initialize localStorage for the doc if no record is found.
-	var valuesArray = localStor.get(docKey).split(","); //Build the array from the string stored in the docKey record.
-	
-	if(valuesArray[i]){//If i in the array exists use that. //Should we check that that col still exists in document?
-		console.log('Existing value:', valuesArray[i]);
-		$("select[name='"+formName+"']").val(valuesArray[i]); //Updates the select control position.
-	} else {
-		console.log('No value ', localStor.get(docKey));
-		var elementName = defaultLayout(cols, defaultColumns[i],defaultColumns);
-		valuesArray[i] = elementName; //Update the default value in the variable array.
-		localStor.set({docKey : valuesArray}); //Update localStorage to reflect the new array.
+	var onStorage = function(items){
+		var formName = defaultFields[i];
+		console.log('initSelect.onStorage', formName, i, items, items[docKey], docKey);
+		//var i = parseInt(formName.substr(5,1)); //Done. TODO: pass in i to boost speed.
+		var valuesArray = [];
+		if(items[docKey]){
+			valuesArray = items[docKey]; //Get array using the document id as the object key value.
+		} else {//Initialize localStorage for the doc if no record is found.
+			//localStor.set({docKey : []});
+		}
+
+		////////////////////////////
+		//TODO: Move this to it's own function and rewrite. It should store create an initial default menu set on init.
 		
-		$("select[name='"+formName+"']").val(elementName);
+		if(valuesArray && valuesArray[i]){//If i in the array exists use that. //Should we check that that col still exists in document?
+			console.log('Existing value:', valuesArray[i]);
+			$("select[name='"+formName+"']").val(valuesArray[i]); //Updates the select control position.
+		} else {
+			console.log('No value ');
+			
+			var elementName = defaultLayout(cols, defaultColumns[i],defaultColumns);
+			
+			valuesArray[i] = elementName; //Update the default value in the variable array.
+	
+console.log('Made it here.', items[docKey], docKey,elementName);
+			$("select[name='"+formName+"']").val(elementName);
+
+			var obj = items.docKey
+			chrome.storage.local.set({docKey : elementName}); //Why isn't this storing?
+		}
+		
+		//changeAction(formName, elementName);
 	}
-	//changeAction(formName, elementName);
+
+	chrome.storage.local.get(docKey,onStorage);
 }
 
 var nextCol = 0; //Needs to be global so that it persists between calls.
@@ -503,7 +546,8 @@ var nextCol = 0; //Needs to be global so that it persists between calls.
 //If the spreadsheet does not have a record in the cache, 
 //this function will find either the default Citable columns or the next unique column.
 defaultLayout = function(cols, column, defaultColumns) {
-	console.log('defaultLayout()', column, jQuery.inArray(column,cols));
+	console.log('defaultLayout()', column, cols, defaultColumns, jQuery.inArray(column,cols));
+	
 	var findUnique = function(){
 		console.log('Default column not found. Searching for next unique column.',cols.length);
 		for(var i=nextCol; i<cols.length; i++){
@@ -514,6 +558,7 @@ defaultLayout = function(cols, column, defaultColumns) {
 		}
 		return 'none'; //If we run out of columns return 'none'.
 	}
+	
 	return jQuery.inArray(column,cols)>-1?column:findUnique();
 }
 	
@@ -595,43 +640,47 @@ var localStor = new SyncChromeStorage();
 var startup = function(){
 	console.log('startup');
 
-	console.log('window.url ', document.URL);
-	
-	/*
-	try {
-		console.log('Try parsing the url');
-		docKey = parseURLParams(document.URL)['key'][0];
-		//Causes a bug where the page loaded with the key in the url parameter will always default to the original document on refresh.	
-		//TODO: FIX: Scrape the docKey from the url param and store it in local storage, then reload the page without the parameter.
-		localStorage['defaultDoc'] = docKey; 
-		gdocs.printDocument(null, processRowsCallback); //In printexport.js
-		gdocs.start(); //In menu.js Start the doc menu building process.
-	} catch(err) {
-	*/
-		//No document in URL, check for a default docKey stored in localStorage.
-		//console.log('Error: ',err);
-		var defaultDoc = localStor.get('defaultDoc'); //localStorage['defaultDoc'];
-		if(defaultDoc != undefined) {
-			console.log('localStor["defaultDoc"] ',defaultDoc);
-			docKey = defaultDoc; 
+	var onStorage = function(items){
+		console.log('startup.onStorage', document.URL, items);
+		
+		/*
+		try {
+			console.log('Try parsing the url');
+			docKey = parseURLParams(document.URL)['key'][0];
+			//Causes a bug where the page loaded with the key in the url parameter will always default to the original document on refresh.	
+			//TODO: FIX: Scrape the docKey from the url param and store it in local storage, then reload the page without the parameter.
+			localStorage['defaultDoc'] = docKey; 
 			gdocs.printDocument(null, processRowsCallback); //In printexport.js
-			gdocs.start();
+			gdocs.start(); //In menu.js Start the doc menu building process.
+		} catch(err) {
+		*/
+			//No document in URL, check for a default docKey stored in localStorage.
+			//console.log('Error: ',err);
+			var defaultDoc = items.defaultDoc; //localStorage['defaultDoc'];
+			
+			if(defaultDoc != undefined) {
+				console.log('items.defaultDoc',defaultDoc);
+				docKey = defaultDoc; 
+				gdocs.printDocument(null, processRowsCallback); //In printexport.js
+				gdocs.start();
+			}
+			else {
+				//There is no default document set.
+				//This page was loaded from the app icon and not from a document. 
+				console.log('Get doc from menu');
+				gdocs.start(getDocId);
+			}
+		/*
 		}
-		else {
-			//There is no default document set.
-			//This page was loaded from the app icon and not from a document. 
-			console.log('Get doc from menu');
-			gdocs.start(getDocId);
-		}
-	/*
+		*/
+		//Initialized the layout CSS for the radio controls.
+		//value, key, formName, elementName, callback
+		document.getElementById('loading').addClassName(items.orientation);
+		initCheck(items.m, false, 'mForm', 'm');
+		initRadio(items.orientation, 'landscape', 'orientation', 'pages', toggleCSS); 
+		initRadio(items.font, 'Droid', 'fonts', 'font', setFontIcon);
 	}
-	*/
-	//Initialized the layout CSS for the radio controls.
-	//value, key, formName, elementName, callback
-	document.getElementById('loading').addClassName(localStor.get('orientation'));
-	initCheck(localStor.get('m'), false, 'mForm', 'm');
-	initRadio(localStor.get('orientation'), 'landscape', 'orientation', 'pages', toggleCSS); 
-	initRadio(localStor.get('font'), 'Droid', 'fonts', 'font', setFontIcon);
+	chrome.storage.local.get(null, onStorage);
 }
 
 //Run toggleAuth when the constructor is called to kick everything off.

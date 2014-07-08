@@ -66,18 +66,30 @@ gdocs.processDocContent = function(response, xhr, callback) {
 ////////////////////////////////////////////////////
 gdocs.printDocument = function(destination, callback) {
 	if(destination == 'new'){ return; }
-	var worksheetId = 'od6';
-    var url = SPREAD_SCOPE +'/list/'+docKey+'/'+worksheetId+'/private/full'; //good
-    
-    var params = {
-    'headers': {
-      'GData-Version': '3.0'
-    },
-   'parameters': {
-      'alt': 'json',
-    }
-    };
-    bgPage.oauth.sendSignedRequest(url, function(response, xhr){gdocs.processDocContent(response,xhr,callback )}, params);
+	//var worksheetId = 'od6';
+    //var url = SPREAD_SCOPE +'/list/'+docKey+'/'+worksheetId+'/private/full'; //good
+
+    	var handleSuccess = function(response, xhr){
+    		gdocs.processDocContent(response,xhr,callback );
+    	}
+
+      var config = {
+        params: {
+            'alt': 'json'
+        },
+        headers: {
+          'Authorization': 'Bearer ' + gDocsUtil.accessToken,
+          'GData-Version': '3.0',
+        }
+      };
+
+      var worksheetId = 'default';
+
+      var url = SPREAD_SCOPE +'/list/'+docKey+'/'+worksheetId+'/private/full?'+util.stringify(config.params);
+      
+      gDocsUtil.makeRequest('GET', url, handleSuccess, null, config.headers);
+
+    //bgPage.oauth.sendSignedRequest(url, function(response, xhr){gdocs.processDocContent(response,xhr,callback )}, params);
 };
 /////////////////////////////////////////////////////////
 

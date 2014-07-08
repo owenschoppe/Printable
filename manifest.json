@@ -8,7 +8,8 @@
   "oauth2": {
     "client_id": "541444188803-cgjdo5m8u1992dmgs809rqra6mao1dp5.apps.googleusercontent.com",
     "scopes": [
-      "https://www.googleapis.com/auth/drive"
+      "https://www.googleapis.com/auth/drive",
+      "https://spreadsheets.google.com/feeds"
     ]
   },
   "icons": { 
