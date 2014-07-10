@@ -177,6 +177,7 @@ setTotal = function(pages){
 			$('.portraitIcon').show();
 			//toggleCSS(1,noteOrderCSS);
 			toggleCSS(1);
+			bgPage.resizeWindow('printable',1200,1110);
 		} else {
 			console.log('toggle to landscape');
 			$('.page').toggleClass('portrait landscape');
@@ -185,6 +186,7 @@ setTotal = function(pages){
 			$('.portraitIcon').hide();
 			//toggleCSS(0,noteOrderCSS);
 			toggleCSS(0);
+			bgPage.resizeWindow('printable',1440,900);
 		}
 		
 	};

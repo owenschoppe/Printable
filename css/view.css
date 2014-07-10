@@ -395,6 +395,7 @@ ui-state-highlight {
 #output {
 	float:left;
 	clear:none;
+	width:1404px;
 }
 .offset {
 	position:relative;

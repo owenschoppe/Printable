@@ -30,18 +30,41 @@ console.log('gdocs accessToken',gDocsUtil.accessToken, chrome.identity);
   });
 }
 
-launchPrintable = function(){
+chrome.app.runtime.onLaunched.addListener(function() {
+		chrome.storage.local.get('orientation', function(items){
+			launchPrintable(items['orientation']);	
+		});
+});
+
+launchPrintable = function(orientation){
+	if(orientation == 'portrait'){
+		createWindow('printable',1200,1110);
+	} else {	//default window size.
+		createWindow('printable',1440,900);
+	}
+}
+
+createWindow = function(id,w,h){
+	var maxH = Math.round(window.screen.availHeight*0.9);
+	var maxW = Math.round(window.screen.availWidth*0.9);
+	w = w < maxW ? w : maxW;
+	h = h < maxH ? h : maxH;
 	chrome.app.window.create('view.html', {
-	    'bounds': {
-	    	'width': 1200,
-	    	'height': 900
+	    'id': id,
+	    'innerBounds': {
+	    	'width': w,
+	    	'height': h
 	    }
   	});
 }
 
-chrome.app.runtime.onLaunched.addListener(function() {
-		launchPrintable();
-});
+resizeWindow = function(id,w,h){
+	var maxH = Math.round(window.screen.availHeight*0.9);
+	var maxW = Math.round(window.screen.availWidth*0.9);
+	w = w < maxW ? w : maxW;
+	h = h < maxH ? h : maxH;
+    chrome.app.window.get(id).resizeTo(w, h);
+}
 
 //Listener for communication from Citable.
 chrome.runtime.onMessageExternal.addListener(
