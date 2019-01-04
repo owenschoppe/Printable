@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Printable",
-  "version": "0.9",
+  "version": "0.9.1",
   "minimum_chrome_version": "29",
   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdz6yw7GgzmoEr7UzXVozEOXs5RC2rQs90LtXeo/0vOOYUMhqNAWwGUel8kRgpZPu9sMuaZV7NVEiPR9MZuEUoTgwZ8NNZ/JiLxjzb9tyB3++PaOjBuIdOL3TlF2Ut9BQsRcQTh35oOvvv/WIypxe68dIRICTykKP9XBg0UwKPnQIDAQAB",
   "description": "Print Google spreadsheets on sticky notes.",
@@ -12,11 +12,11 @@
       "https://spreadsheets.google.com/feeds"
     ]
   },
-  "icons": { 
+  "icons": {
   	"16": "icon16.png",
     "19": "icon19.png",
     "38": "icon76.png",
-    "128": "icon128.png" 
+    "128": "icon128.png"
   },
   "app": {
     "background": {
@@ -27,7 +27,7 @@
   "permissions": [
     "storage",
     "identity",
-    "http://*/*", 
+    "http://*/*",
     "https://*/*",
     "https://docs.google.com/feeds/*",
     "https://spreadsheets.google.com/feeds/lists/*",
